@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 
@@ -6,14 +7,23 @@ import { weatherConditions } from '../utils/WeatherConditions';
 
 const Weather = ({ weather, temperature }) => {
   return (
-    <View style={styles.weatherContainer}>
+    <View
+      style={[
+        styles.weatherContainer,
+        { backgroundColor: weatherConditions[weather].color }
+      ]}
+    >
       <View style={styles.headerContainer}>
-        <MaterialCommunityIcons size={48} name="weather-sunny" color={'#fff'} />
+        <MaterialCommunityIcons
+          size={48}
+          name={weatherConditions[weather].icon}
+          color={'#fff'}
+        />
         <Text style={styles.tempText}>{temperature}˚</Text>
       </View>
       <View styl={styles.bodyContainer}>
-        <Text style={styles.title}>{weather}</Text>
-        <Text style={styles.subtitle}>It hurts my eyes!</Text>
+        <Text style={styles.title}>{weatherConditions[weather].title}</Text>
+        <Text style={styles.subtitle}>{weatherConditions[weather].subtitle}</Text>
       </View>
     </View>
   );
@@ -49,5 +59,10 @@ const styles = StyleSheet.create({
     color: '#fff'
   }
 });
+
+Weather.propTypes = {
+  temperature: PropTypes.number.isRequired,
+  weather: PropTypes.string
+}
 
 export default Weather;

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Weather from './src/components/Weather';
-import { API_KEY } from 'react-native-dotenv'
+
+import fetchWeather from './src/actions/weatherClient';
 
 export default class App extends Component {
   state = {
@@ -14,25 +15,19 @@ export default class App extends Component {
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.fetchWeather(position.coords.latitude, position.coords.longitude);
+        fetchWeather(position.coords.latitude, position.coords.longitude)
+        .then(res => {
+          this.setState({
+            temperature: res.main.temp,
+            weatherCondition: res.weather[0].main,
+            isLoading: false
+          });
+        });
       },
       error => {
         this.setState({ error: 'Error getting weather conditions' });
       }
     );
-  }
-
-  fetchWeather(lat = 25, lon = 25) {
-    fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}&units=metric`)
-    .then(res => res.json())
-    .then(json => {
-      console.log(json);
-      this.setState({
-        temperature: json.main.temp,
-        weatherCondition: json.weather[0].main,
-        isLoading: false
-      });
-    });
   }
 
   render() {
@@ -52,6 +47,6 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#ffff'
   }
 });
