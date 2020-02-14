@@ -1,5 +1,7 @@
+# Weather App
+
 <p align="center">
-  <img src="https://imgur.com/Ky8x6lA" />
+  <img src="https://i.imgur.com/Ky8x6lA.png" height="536"/>
 </p>
 
 ## Prerequisites
